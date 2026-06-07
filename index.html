@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>luisa duggan — archivo fotográfico</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --disp:'Space Grotesk',sans-serif;
+  --mono:'IBM Plex Mono',monospace;
+  --ink:#111111;
+  --white:#ffffff;
+  --red:#d4200c;
+  --blue:#1233c8;
+  --yellow:#f0c000;
+}
+html{scroll-behavior:smooth;}
+body{background:#f0efed;color:var(--ink);font-family:var(--mono);font-size:12px;line-height:1.5;}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:200;background:#fff;border-bottom:2px solid var(--ink);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:46px;}
+.nav-logo{font-family:var(--disp);font-size:16px;font-weight:700;letter-spacing:-0.5px;text-transform:lowercase;cursor:pointer;}
+.nav-links{display:flex;list-style:none;}
+.nav-links a{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:lowercase;color:#999;text-decoration:none;padding:0 12px;height:46px;display:flex;align-items:center;border-left:1px solid #eee;transition:color 0.1s;}
+.nav-links a:hover{color:var(--ink);}
+.nav-links a.active{color:var(--ink);border-bottom:2px solid var(--ink);}
+
+/* FILTER BAR */
+.fbar{position:sticky;top:46px;z-index:199;background:#fff;border-bottom:1px solid #ddd;display:flex;align-items:center;padding:0 2rem;overflow-x:auto;height:36px;}
+.fg{display:flex;align-items:center;border-right:1px solid #eee;padding-right:1rem;margin-right:1rem;gap:2px;flex-shrink:0;}
+.fg:last-child{border-right:none;}
+.flbl{font-family:var(--mono);font-size:7px;letter-spacing:1.5px;text-transform:lowercase;color:#bbb;margin-right:5px;}
+.ftag{font-family:var(--mono);font-size:7px;letter-spacing:0.5px;text-transform:lowercase;padding:2px 7px;border:1px solid transparent;background:transparent;cursor:pointer;color:#aaa;transition:all 0.1s;}
+.ftag:hover{color:var(--ink);}
+.ftag.on{background:var(--ink);color:#fff;}
+
+/* SECTIONS */
+.sec{display:none;}
+.sec.visible{display:block;}
+#sec-contact.visible{display:grid;}
+
+/* PAGE MARGINS */
+.page{background:#fff;border-bottom:1px solid #e0e0e0;display:grid;grid-template-columns:48px 1fr 48px;grid-template-rows:36px 1fr 36px;}
+.m-top{grid-column:2;grid-row:1;display:flex;justify-content:space-between;align-items:center;padding:0 1.5rem;font-family:var(--mono);font-size:7px;letter-spacing:1.5px;text-transform:lowercase;}
+.m-bot{grid-column:2;grid-row:3;display:flex;justify-content:space-between;align-items:center;padding:0 1.5rem;font-family:var(--mono);font-size:7px;letter-spacing:1.5px;text-transform:lowercase;}
+.m-left{grid-column:1;grid-row:1/4;display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;font-family:var(--mono);font-size:7px;letter-spacing:2px;text-transform:lowercase;}
+.m-right{grid-column:3;grid-row:1/4;display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;font-family:var(--mono);font-size:7px;letter-spacing:2px;}
+
+/* COVER */
+.cover{min-height:360px;}
+.cover-body{grid-column:2;grid-row:2;padding:2.5rem 2rem;display:flex;flex-direction:column;justify-content:space-between;}
+.cover-author{font-family:var(--mono);font-size:8px;letter-spacing:3px;text-transform:lowercase;color:#aaa;margin-bottom:1.2rem;}
+.cover-title{font-family:var(--disp);font-size:80px;font-weight:700;line-height:0.85;letter-spacing:-4px;text-transform:lowercase;color:var(--ink);margin-bottom:2rem;}
+.cover-sub{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;color:#bbb;text-transform:lowercase;border-top:1px solid #eee;padding-top:0.8rem;line-height:1.9;}
+
+/* INDEX */
+.index-body{grid-column:2;grid-row:2;padding:1.5rem 2rem;}
+.index-lbl{font-family:var(--mono);font-size:7px;letter-spacing:2px;color:#ccc;text-transform:lowercase;padding-bottom:0.5rem;border-bottom:1px solid #eee;margin-bottom:0.6rem;display:flex;justify-content:space-between;}
+.idx-row{display:flex;justify-content:space-between;align-items:baseline;padding:0.45rem 0;border-bottom:1px solid #f5f5f5;cursor:pointer;transition:border-color 0.12s;}
+.idx-row:hover{border-bottom-color:var(--ink);}
+.idx-title{font-family:var(--disp);font-size:14px;font-weight:500;color:var(--ink);letter-spacing:-0.3px;}
+.idx-meta{display:flex;gap:1.2rem;font-family:var(--mono);font-size:7px;color:#ccc;letter-spacing:1px;}
+.idx-pg{min-width:18px;text-align:right;}
+
+/* SPREADS */
+.spread{border-bottom:1px solid #e0e0e0;display:grid;grid-template-columns:48px 1fr 48px;grid-template-rows:36px 1fr 36px;min-height:460px;}
+.spread-body{grid-column:2;grid-row:2;display:grid;grid-template-columns:210px 1fr;min-height:0;}
+.text-col{padding:2rem 2rem 2rem 0;display:flex;flex-direction:column;justify-content:space-between;}
+.proj-num{font-family:var(--mono);font-size:7px;letter-spacing:2px;text-transform:lowercase;}
+.proj-title{font-family:var(--disp);font-size:32px;font-weight:700;line-height:0.9;letter-spacing:-1px;text-transform:lowercase;margin:0.4rem 0 1rem;}
+.proj-body{font-family:var(--mono);font-size:9px;line-height:1.85;margin-bottom:1.5rem;}
+.exp-badge{font-family:var(--mono);font-size:7px;letter-spacing:1.5px;padding:2px 6px;text-transform:lowercase;}
+.facts{display:flex;flex-direction:column;margin-bottom:0.8rem;}
+.fact{display:flex;gap:0.8rem;padding:0.28rem 0;}
+.fk{font-family:var(--mono);font-size:7px;letter-spacing:1px;width:46px;flex-shrink:0;text-transform:lowercase;}
+.fv{font-family:var(--mono);font-size:8px;text-transform:lowercase;}
+.sp-wrap{border-top:1px solid currentColor;padding-top:0.8rem;margin-top:0.8rem;opacity:0.9;}
+.sp-lbl{font-family:var(--mono);font-size:7px;letter-spacing:2px;text-transform:lowercase;margin-bottom:2px;opacity:0.5;}
+.sp-track{font-family:var(--disp);font-size:11px;font-weight:500;opacity:0.7;text-transform:lowercase;margin-bottom:6px;}
+
+/* SHEET SIDE */
+.sheet-col{padding:1.5rem 0 1.5rem 2rem;display:flex;flex-direction:column;gap:5px;}
+.sheet-lbl{font-family:var(--mono);font-size:7px;letter-spacing:2px;text-transform:lowercase;}
+.film-edge{height:10px;flex-shrink:0;background:repeating-linear-gradient(90deg,#111 0,#111 8px,#2a2a2a 8px,#2a2a2a 12px,#111 12px,#111 20px);}
+.full-sheet{flex:1;min-height:160px;overflow:hidden;position:relative;cursor:zoom-in;}
+.full-sheet img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;transition:transform 0.3s;}
+.full-sheet:hover img{transform:scale(1.01);}
+.sheet-overlay{position:absolute;inset:0;background:rgba(0,0,0,0);display:flex;align-items:center;justify-content:center;transition:background 0.2s;}
+.full-sheet:hover .sheet-overlay{background:rgba(0,0,0,0.3);}
+.sheet-overlay span{font-family:var(--mono);font-size:8px;color:#fff;letter-spacing:2px;opacity:0;transition:opacity 0.2s;text-transform:lowercase;}
+.full-sheet:hover .sheet-overlay span{opacity:1;}
+
+/* CONTACT SHEET GRID */
+.cs-container{flex:1;display:none;flex-direction:column;gap:6px;}
+.cs-grid{background:#0e0e0e;padding:8px 8px 8px 18px;position:relative;flex:1;}
+.cs-sprocket{position:absolute;left:0;top:0;bottom:0;width:14px;background:repeating-linear-gradient(0deg,#111 0,#111 9px,#333 9px,#333 11px,#111 11px,#111 20px);}
+.cs-frames{display:grid;grid-template-columns:repeat(6,1fr);gap:2px;}
+.cs-frame{aspect-ratio:3/2;position:relative;cursor:pointer;overflow:hidden;border:1px solid transparent;transition:border-color 0.1s;}
+.cs-frame:hover{border-color:#f0c000;}
+.cs-frame.active{border-color:#d4200c;}
+.cs-frame.active::after{content:'×';position:absolute;top:2px;right:3px;font-size:8px;color:#d4200c;font-family:var(--mono);}
+.fr-num{position:absolute;bottom:2px;left:3px;font-family:var(--mono);font-size:6px;color:rgba(255,255,255,0.2);}
+.enlarged-wrap{display:none;flex-shrink:0;}
+.enlarged-photo{aspect-ratio:3/2;overflow:hidden;position:relative;background:#1a1a18;}
+.enlarged-photo img{width:100%;height:100%;object-fit:cover;display:none;}
+.enlarged-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:9px;color:#333;letter-spacing:2px;}
+.enlarged-meta{display:flex;justify-content:space-between;margin-top:4px;}
+.enlarged-meta span{font-family:var(--mono);font-size:7px;color:#555;letter-spacing:1px;}
+.toggle-btn{font-family:var(--mono);font-size:8px;letter-spacing:1px;text-transform:lowercase;border:1px solid #e0e0e0;background:transparent;color:#aaa;padding:4px 10px;cursor:pointer;transition:all 0.1s;margin-top:4px;}
+.toggle-btn:hover{border-color:var(--ink);color:var(--ink);}
+
+/* LIGHTBOX */
+#lb{position:fixed;inset:0;background:rgba(0,0,0,0.97);z-index:999;display:none;flex-direction:column;align-items:center;justify-content:center;padding:2rem;cursor:zoom-out;}
+#lb.open{display:flex;}
+#lb img{max-width:100%;max-height:85vh;object-fit:contain;}
+#lb-cap{font-family:var(--mono);font-size:8px;color:#444;letter-spacing:2px;text-transform:lowercase;margin-top:1rem;}
+#lb-x{position:absolute;top:1.5rem;right:2rem;font-family:var(--mono);font-size:9px;color:#444;cursor:pointer;background:none;border:none;letter-spacing:2px;text-transform:lowercase;}
+#lb-x:hover{color:#fff;}
+
+/* ABOUT */
+.about-hero{background:var(--ink);padding:3.5rem;position:relative;overflow:hidden;}
+.about-ghost{position:absolute;right:-0.02em;top:-0.05em;font-family:var(--disp);font-size:220px;font-weight:700;text-transform:lowercase;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,0.04);pointer-events:none;line-height:1;}
+.about-hl{font-family:var(--disp);font-size:62px;font-weight:700;line-height:0.86;text-transform:lowercase;color:#fff;position:relative;z-index:1;letter-spacing:-2px;}
+.about-hl em{font-style:normal;color:var(--yellow);}
+.about-cols{display:grid;grid-template-columns:1fr 1fr 1fr;background:#fff;border-top:3px solid var(--ink);}
+.about-col{padding:2rem;border-right:1px solid #e0e0e0;}
+.about-col:last-child{border-right:none;}
+.acol-lbl{font-family:var(--mono);font-size:7px;letter-spacing:2px;text-transform:lowercase;color:#bbb;margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid #eee;}
+.about-col p{font-family:var(--mono);font-size:9px;line-height:1.85;color:#555;margin-bottom:0.8rem;}
+.stat{display:flex;justify-content:space-between;padding:0.4rem 0;border-bottom:1px solid #f5f5f5;}
+.sk{font-family:var(--mono);font-size:8px;color:#bbb;text-transform:lowercase;}
+.sv{font-family:var(--mono);font-size:8px;color:var(--ink);font-weight:500;}
+
+/* CONTACT */
+#sec-contact{grid-template-columns:1fr 1fr;min-height:380px;background:#fff;}
+.contact-l{background:var(--ink);padding:3rem;display:flex;flex-direction:column;justify-content:space-between;}
+.contact-big{font-family:var(--disp);font-size:52px;font-weight:700;line-height:0.88;text-transform:lowercase;color:#fff;letter-spacing:-2px;}
+.contact-big em{font-style:normal;color:var(--blue);}
+.cline{display:flex;gap:1rem;padding:0.55rem 0;border-bottom:1px solid #1a1a1a;}
+.ck{font-family:var(--mono);font-size:7px;letter-spacing:1px;color:#444;width:65px;flex-shrink:0;text-transform:lowercase;}
+.cv{font-size:12px;color:#fff;font-family:var(--mono);}
+.contact-r{padding:3rem;}
+.clbl{font-family:var(--mono);font-size:7px;letter-spacing:2px;text-transform:lowercase;color:#bbb;margin-bottom:1.5rem;padding-bottom:0.5rem;border-bottom:1px solid #eee;}
+.cfield{margin-bottom:1.3rem;}
+.cfield label{display:block;font-family:var(--mono);font-size:7px;letter-spacing:1.5px;text-transform:lowercase;color:#bbb;margin-bottom:5px;}
+.cfield input,.cfield textarea{width:100%;border:none;border-bottom:1px solid var(--ink);background:transparent;font-family:var(--mono);font-size:13px;color:var(--ink);padding:6px 0;outline:none;border-radius:0;}
+.cfield textarea{min-height:70px;resize:none;}
+.csend{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:lowercase;background:var(--ink);color:#fff;border:none;padding:10px 24px;cursor:pointer;transition:background 0.1s;}
+.csend:hover{background:var(--blue);}
+</style>
+</head>
+<body>
+
+<!-- LIGHTBOX -->
+<div id="lb">
+  <button id="lb-x" onclick="closeLb()">cerrar ×</button>
+  <img id="lb-img" src="" alt="">
+  <p id="lb-cap"></p>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo" onclick="showSec('work')">luisa duggan</div>
+  <ul class="nav-links">
+    <li><a href="#" class="active" data-s="work">trabajo</a></li>
+    <li><a href="#" data-s="about">sobre mí</a></li>
+    <li><a href="#" data-s="contact">contacto</a></li>
+  </ul>
+</nav>
+
+<!-- ============================================================
+     WORK
+     ============================================================ -->
+<div id="sec-work" class="sec visible">
+
+  <!-- FILTER BAR -->
+  <div class="fbar">
+    <div class="fg">
+      <span class="flbl">tipo</span>
+      <button class="ftag on" data-g="tipo" data-v="todo">todo</button>
+      <button class="ftag" data-g="tipo" data-v="calle">calle</button>
+      <button class="ftag" data-g="tipo" data-v="retrato">retrato</button>
+      <button class="ftag" data-g="tipo" data-v="paisaje">paisaje</button>
+      <button class="ftag" data-g="tipo" data-v="interior">interior</button>
+      <button class="ftag" data-g="tipo" data-v="experimental">experimental</button>
+    </div>
+    <div class="fg">
+      <span class="flbl">año</span>
+      <button class="ftag on" data-g="year" data-v="todo">todo</button>
+      <button class="ftag" data-g="year" data-v="2024">2024</button>
+      <button class="ftag" data-g="year" data-v="2023">2023</button>
+      <button class="ftag" data-g="year" data-v="2022">2022</button>
+    </div>
+  </div>
+
+  <!-- COVER -->
+  <div class="page cover" style="background:#fff;">
+    <div class="m-left" style="border-right:1px solid #111;color:#ccc;">luisa duggan · archivo fotográfico</div>
+    <div class="m-top" style="border-bottom:1px solid #111;">
+      <span style="color:#bbb;">fotografía analógica · 35mm · barcelona</span>
+      <span style="color:#bbb;">2015–2024</span>
+    </div>
+    <div class="cover-body">
+      <div>
+        <!-- ✏️ EDITAR: tu nombre -->
+        <p class="cover-author">luisa duggan</p>
+        <!-- ✏️ EDITAR: título del archivo -->
+        <h1 class="cover-title">archivo<br>fotográfico</h1>
+      </div>
+      <!-- ✏️ EDITAR: descripción breve y URL -->
+      <p class="cover-sub">fotografía analógica de situaciones.<br>35mm · zoom · barcelona · 2015–2024<br><br>luisaduggan.github.io</p>
+    </div>
+    <div class="m-bot" style="border-top:1px solid #111;">
+      <span style="color:#bbb;">archivo nº04 · 2024</span>
+      <span style="color:#bbb;">— 00</span>
+    </div>
+    <div class="m-right" style="border-left:1px solid #111;color:#ccc;">archivo nº04 — 2024</div>
+  </div>
+
+  <!-- INDEX -->
+  <div class="page" style="background:#fff;border-bottom:1px solid #e0e0e0;">
+    <div class="m-left" style="border-right:1px solid #e0e0e0;color:#ddd;">luisa duggan</div>
+    <div class="m-top" style="border-bottom:1px solid #eee;">
+      <span style="color:#ccc;">índice de proyectos</span>
+      <span style="color:#ccc;">— 01</span>
+    </div>
+    <div class="index-body">
+      <div class="index-lbl">
+        <span>proyecto · rollo · año</span>
+        <span><span style="background:var(--ink);color:#fff;padding:1px 5px;font-size:7px;">exp</span> = sección experimental</span>
+      </div>
+      <!-- ✏️ EDITAR: filas del índice — copia/pega para añadir proyectos -->
+      <div class="idx-row" onclick="scrollTo('p1')"><span class="idx-title">vías · playa · b/n</span><div class="idx-meta"><span>2022</span><span>r·03</span><span class="idx-pg">02</span></div></div>
+      <div class="idx-row" onclick="scrollTo('p2')"><span class="idx-title">el mar</span><div class="idx-meta"><span>2024</span><span>r·mar</span><span class="idx-pg">03</span></div></div>
+      <div class="idx-row" onclick="scrollTo('p3')"><span class="idx-title">noche · feria · música</span><div class="idx-meta"><span>2023</span><span>r·01</span><span class="idx-pg">04</span></div></div>
+      <div class="idx-row" onclick="scrollTo('p4')"><span class="idx-title">rocas · costa brava <span style="background:var(--ink);color:#fff;padding:1px 5px;font-size:7px;margin-left:4px;">exp</span></span><div class="idx-meta"><span>2022</span><span>r·04</span><span class="idx-pg">05</span></div></div>
+      <div class="idx-row" onclick="scrollTo('p5')"><span class="idx-title">barcelona, situaciones</span><div class="idx-meta"><span>2024</span><span>r·06</span><span class="idx-pg">06</span></div></div>
+      <div class="idx-row" onclick="scrollTo('p6')"><span class="idx-title">música · interiores <span style="background:var(--ink);color:#fff;padding:1px 5px;font-size:7px;margin-left:4px;">exp</span></span><div class="idx-meta"><span>2023</span><span>r·05</span><span class="idx-pg">07</span></div></div>
+      <div class="idx-row" onclick="scrollTo('p7')"><span class="idx-title">gente · movimiento</span><div class="idx-meta"><span>2024</span><span>r·07</span><span class="idx-pg">08</span></div></div>
+      <div class="idx-row" onclick="scrollTo('p8')"><span class="idx-title">luz interior <span style="background:var(--ink);color:#fff;padding:1px 5px;font-size:7px;margin-left:4px;">exp</span></span><div class="idx-meta"><span>2022</span><span>r·02</span><span class="idx-pg">09</span></div></div>
+    </div>
+    <div class="m-bot" style="border-top:1px solid #eee;"><span style="color:#ccc;">archivo fotográfico · luisa duggan</span><span style="color:#ccc;">— 01</span></div>
+    <div class="m-right" style="border-left:1px solid #e0e0e0;color:#ddd;">índice</div>
+  </div>
+
+  <!-- ============================================================
+       SPREADS — cada bloque = un proyecto
+       Para añadir uno nuevo: copia un bloque completo y cambia
+       los textos marcados con ✏️
+       ============================================================ -->
+
+  <!-- SPREAD 1 — vías playa b/n -->
+  <div class="spread" id="p1" data-tipo="calle paisaje" data-year="2022" data-exp="false" style="background:#fff;">
+    <div class="m-top" style="border-bottom:1px solid #e8e8e8;"><span style="color:#aaa;">vías · playa · b/n</span><span style="color:#aaa;">— 02</span></div>
+    <div class="m-left" style="border-right:1px solid #e8e8e8;color:#ddd;">luisa duggan</div>
+    <div class="spread-body">
+      <div class="text-col" style="border-right:1px solid #e8e8e8;">
+        <div>
+          <span class="proj-num" style="color:#aaa;">001 / 008</span>
+          <!-- ✏️ EDITAR: título del proyecto -->
+          <h2 class="proj-title" style="color:#d4200c;">vías·<br>playa·<br>b/n</h2>
+          <!-- ✏️ EDITAR: descripción -->
+          <p class="proj-body" style="color:#555;">verano 2022. las vías de la costa y la playa vacía antes de la temporada. primer rollo del año, b/n. algo entre el viaje y el final del viaje.</p>
+        </div>
+        <div>
+          <div class="facts" style="border-top:1px solid #e8e8e8;">
+            <!-- ✏️ EDITAR: metadatos -->
+            <div class="fact"><span class="fk" style="color:#aaa;">tipo</span><span class="fv">calle · paisaje</span></div>
+            <div class="fact"><span class="fk" style="color:#aaa;">lugar</span><span class="fv">costa · valencia</span></div>
+            <div class="fact"><span class="fk" style="color:#aaa;">año</span><span class="fv">2022</span></div>
+            <div class="fact"><span class="fk" style="color:#aaa;">rollo</span><span class="fv">r·03 — kodak t-max 400</span></div>
+            <div class="fact"><span class="fk" style="color:#aaa;">fotog.</span><span class="fv">41</span></div>
+          </div>
+          <div class="sp-wrap" style="border-top-color:#e8e8e8;">
+            <p class="sp-lbl">soundtrack</p>
+            <!-- ✏️ EDITAR: nombre de la canción -->
+            <p class="sp-track">Chet Baker — Almost Blue</p>
+            <!-- ✏️ EDITAR: cambia el ID de Spotify (la parte después de /track/) -->
+            <iframe style="border-radius:0;" src="https://open.spotify.com/embed/track/3HfB5hBU9YDG3oZcCRzBMx?utm_source=generator&theme=0" width="100%" height="80" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+          </div>
+        </div>
+      </div>
+      <div class="sheet-col">
+        <p class="sheet-lbl" style="color:#bbb;">plancha de contacto · r·03 · 41 fotogramas</p>
+        <div class="film-edge"></div>
+        <!-- ✏️ EDITAR: cambia el src por el nombre de tu imagen en la carpeta img/ -->
+        <div class="full-sheet" onclick="openLb('img/r03_vias_playa.jpg','vías · playa · b/n · r·03')">
+          <img src="img/r03_vias_playa.jpg" alt="vías playa b/n">
+          <div class="sheet-overlay"><span>ampliar plancha ↗</span></div>
+        </div>
+        <div class="cs-container" id="cs-p1">
+          <div class="cs-grid">
+            <div class="cs-sprocket"></div>
+            <div class="cs-frames" id="frames-p1"></div>
+          </div>
+          <div class="enlarged-wrap" id="enl-p1">
+            <div class="enlarged-photo">
+              <img id="enli-p1" src="img/r03_vias_playa.jpg" alt="">
+              <div class="enlarged-placeholder" id="enlph-p1">selecciona un fotograma</div>
+            </div>
+            <div class="enlarged-meta">
+              <span id="enl-id-p1">— frame —</span>
+              <span id="enl-cap-p1"></span>
+            </div>
+          </div>
+        </div>
+        <div class="film-edge"></div>
+        <button class="toggle-btn" id="toggle-p1" onclick="toggleCS('p1')">ver fotogramas →</button>
+      </div>
+    </div>
+    <div class="m-bot" style="border-top:1px solid #e8e8e8;"><span style="color:#aaa;">archivo fotográfico · luisa duggan</span><span style="color:#aaa;">— 02</span></div>
+    <div class="m-right" style="border-left:1px solid #e8e8e8;color:#ddd;">001</div>
+  </div>
+
+  <!-- SPREAD 2 — el mar -->
+  <div class="spread" id="p2" data-tipo="paisaje retrato" data-year="2024" data-exp="false" style="background:#fff;">
+    <div class="m-top" style="border-bottom:1px solid #e8e8e8;"><span style="color:#aaa;">el mar</span><span style="color:#aaa;">— 03</span></div>
+    <div class="m-left" style="border-right:1px solid #e8e8e8;color:#ddd;">luisa duggan</div>
+    <div class="spread-body">
+      <div class="text-col" style="border-right:1px solid #e8e8e8;">
+        <div>
+          <span class="proj-num" style="color:#aaa;">002 / 008</span>
+          <h2 class="proj-title" style="color:#111;">el<br>mar</h2>
+          <p class="proj-body" style="color:#555;">costa brava, 2024. retratos en las rocas. luz plana de invierno, colores apagados. personas en el límite entre el agua y la piedra.</p>
+        </div>
+        <div>
+          <div class="facts" style="border-top:1px solid #e8e8e8;">
+            <div class="fact"><span class="fk" style="color:#aaa;">tipo</span><span class="fv">paisaje · retrato</span></div>
+            <div class="fact"><span class="fk" style="color:#aaa;">lugar</span><span class="fv">costa brava</span></div>
+            <div class="fact"><span class="fk" style="color:#aaa;">año</span><span class="fv">2024</span></div>
+            <div class="fact"><span class="fk" style="color:#aaa;">rollo</span><span class="fv">r·mar — portra 400</span></div>
+            <div class="fact"><span class="fk" style="color:#aaa;">fotog.</span><span class="fv">38</span></div>
+          </div>
+          <div class="sp-wrap" style="border-top-color:#e8e8e8;">
+            <p class="sp-lbl">soundtrack</p>
+            <p class="sp-track">Brian Eno — An Ending (Ascent)</p>
+            <iframe style="border-radius:0;" src="https://open.spotify.com/embed/track/0nJW01T7XtvILxQgC5J7Wh?utm_source=generator&theme=0" width="100%" height="80" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+          </div>
+        </div>
+      </div>
+      <div class="sheet-col">
+        <p class="sheet-lbl" style="color:#bbb;">plancha de contacto · r·mar · 38 fotogramas</p>
+        <div class="film-edge"></div>
+        <div class="full-sheet" onclick="openLb('img/rmar_el_mar.jpg','el mar · r·mar')">
+          <img src="img/rmar_el_mar.jpg" alt="el mar">
+          <div class="sheet-overlay"><span>ampliar plancha ↗</span></div>
+        </div>
+        <div class="cs-container" id="cs-p2">
+          <div class="cs-grid"><div class="cs-sprocket"></div><div class="cs-frames" id="frames-p2"></div></div>
+          <div class="enlarged-wrap" id="enl-p2"><div class="enlarged-photo"><img id="enli-p2" src="img/rmar_el_mar.jpg" alt=""><div class="enlarged-placeholder" id="enlph-p2">selecciona un fotograma</div></div><div class="enlarged-meta"><span id="enl-id-p2">— frame —</span><span id="enl-cap-p2"></span></div></div>
+        </div>
+        <div class="film-edge"></div>
+        <button class="toggle-btn" id="toggle-p2" onclick="toggleCS('p2')">ver fotogramas →</button>
+      </div>
+    </div>
+    <div class="m-bot" style="border-top:1px solid #e8e8e8;"><span style="color:#aaa;">archivo fotográfico · luisa duggan</span><span style="color:#aaa;">— 03</span></div>
+    <div class="m-right" style="border-left:1px solid #e8e8e8;color:#ddd;">002</div>
+  </div>
+
+  <!-- SPREAD 3 — noche feria música -->
+  <div class="spread" id="p3" data-tipo="calle interior" data-year="2023" data-exp="false" style="background:#fff;">
+    <div class="m-top" style="border-bottom:1px solid #e8e8e8;"><span style="color:#aaa;">noche · feria · música</span><span style="color:#aaa;">— 04</span></div>
+    <div class="m-left" style="border-right:1px solid #e8e8e8;color:#ddd;">luisa duggan</div>
+    <div class="spread-body">
+      <div class="text-col" style="border-right:1px solid #e8e8e8;">
+        <div>
+          <span class="proj-num" style="color:#aaa;">003 / 008</span>
+          <h2 class="proj-title" style="color:#d4200c;">noche·<br>feria·<br>música</h2>
+          <p class="proj-body" style="color:#555;">calella, diciembre 2023. la feria de navidad y los interiores después. luz de carrusel, luz de cocina, luz de escenario improvisado.</p>
+        </div>
+        <div>
+          <div class="facts" style="border-top:1px solid #e8e8e8;">
+            <div class="fact"><span class="fk" style="color:#aaa;">tipo</span><span class="fv">calle · interior</span></div>
+            <div class="fact"><span class="fk" style="color:#aaa;">lugar</span><span class="fv">calella · bcn</span></div>
+            <div class="fact"><span class="fk" style="color:#aaa;">año</span><span class="fv">2023</span></div>
+            <div class="fact"><span class="fk" style="color:#aaa;">rollo</span><span class="fv">r·01 — gold 200</span></div>
+            <div class="fact"><span class="fk" style="color:#aaa;">fotog.</span><span class="fv">35</span></div>
+          </div>
+          <div class="sp-wrap" style="border-top-color:#e8e8e8;">
+            <p class="sp-lbl">soundtrack</p>
+            <p class="sp-track">Devendra Banhart — At the Hop</p>
+            <iframe style="border-radius:0;" src="https://open.spotify.com/embed/track/6uelXRyv8JW0vfuDwMnGBW?utm_source=generator&theme=0" width="100%" height="80" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+          </div>
+        </div>
+      </div>
+      <div class="sheet-col">
+        <p class="sheet-lbl" style="color:#bbb;">plancha de contacto · r·01 · 35 fotogramas</p>
+        <div class="film-edge"></div>
+        <div class="full-sheet" onclick="openLb('img/r01_noche_feria.jpg','noche · feria · música · r·01')">
+          <img src="img/r01_noche_feria.jpg" alt="noche feria música">
+          <div class="sheet-overlay"><span>ampliar plancha ↗</span></div>
+        </div>
+        <div class="cs-container" id="cs-p3">
+          <div class="cs-grid"><div class="cs-sprocket"></div><div class="cs-frames" id="frames-p3"></div></div>
+          <div class="enlarged-wrap" id="enl-p3"><div class="enlarged-photo"><img id="enli-p3" src="img/r01_noche_feria.jpg" alt=""><div class="enlarged-placeholder" id="enlph-p3">selecciona un fotograma</div></div><div class="enlarged-meta"><span id="enl-id-p3">— frame —</span><span id="enl-cap-p3"></span></div></div>
+        </div>
+        <div class="film-edge"></div>
+        <button class="toggle-btn" id="toggle-p3" onclick="toggleCS('p3')">ver fotogramas →</button>
+      </div>
+    </div>
+    <div class="m-bot" style="border-top:1px solid #e8e8e8;"><span style="color:#aaa;">archivo fotográfico · luisa duggan</span><span style="color:#aaa;">— 04</span></div>
+    <div class="m-right" style="border-left:1px solid #e8e8e8;color:#ddd;">003</div>
+  </div>
+
+  <!-- SPREAD 4 — rocas EXPERIMENTAL ocre -->
+  <div class="spread" id="p4" data-tipo="paisaje retrato experimental" data-year="2022" data-exp="true" style="background:#f5e6c8;">
+    <div class="m-top" style="border-bottom:1px solid #d4b87033;"><span style="color:#8B5E1Aaa;">rocas · costa brava</span><span style="color:#8B5E1Aaa;">— 05</span></div>
+    <div class="m-left" style="border-right:1px solid #d4b87033;color:#8B5E1A44;">luisa duggan</div>
+    <div class="spread-body">
+      <div class="text-col" style="border-right:1px solid #d4b87033;">
+        <div>
+          <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.4rem;">
+            <span class="proj-num" style="color:#8B5E1Aaa;">004 / 008</span>
+            <span class="exp-badge" style="background:#5a3a0a;color:#f5e6c8;">experimental</span>
+          </div>
+          <h2 class="proj-title" style="color:#5a3a0a;">rocas·<br>costa<br>brava</h2>
+          <p class="proj-body" style="color:#5a3a0acc;">verano 2022. figuras sobre las rocas de la costa. color desaturado, horizonte alto. el cuerpo como escala frente a la piedra.</p>
+        </div>
+        <div>
+          <div class="facts" style="border-top:1px solid #d4b87033;">
+            <div class="fact"><span class="fk" style="color:#8B5E1Aaa;">tipo</span><span class="fv" style="color:#5a3a0a;">paisaje · retrato</span></div>
+            <div class="fact"><span class="fk" style="color:#8B5E1Aaa;">lugar</span><span class="fv" style="color:#5a3a0a;">costa brava</span></div>
+            <div class="fact"><span class="fk" style="color:#8B5E1Aaa;">año</span><span class="fv" style="color:#5a3a0a;">2022</span></div>
+            <div class="fact"><span class="fk" style="color:#8B5E1Aaa;">rollo</span><span class="fv" style="color:#5a3a0a;">r·04 — portra 400</span></div>
+            <div class="fact"><span class="fk" style="color:#8B5E1Aaa;">fotog.</span><span class="fv" style="color:#5a3a0a;">37</span></div>
+          </div>
+          <div class="sp-wrap" style="border-top-color:#d4b87033;">
+            <p class="sp-lbl" style="color:#8B5E1A;">soundtrack</p>
+            <p class="sp-track" style="color:#5a3a0a;">Arca — Riquiqui</p>
+            <iframe style="border-radius:0;" src="https://open.spotify.com/embed/track/5As3dCFM4bLUGMsieNEBxT?utm_source=generator&theme=0" width="100%" height="80" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+          </div>
+        </div>
+      </div>
+      <div class="sheet-col">
+        <p class="sheet-lbl" style="color:#8B5E1A88;">plancha de contacto · r·04 · 37 fotogramas</p>
+        <div class="film-edge"></div>
+        <div class="full-sheet" onclick="openLb('img/r04_rocas.jpg','rocas · costa brava · r·04')">
+          <img src="img/r04_rocas.jpg" alt="rocas costa brava">
+          <div class="sheet-overlay"><span>ampliar plancha ↗</span></div>
+        </div>
+        <div class="cs-container" id="cs-p4">
+          <div class="cs-grid"><div class="cs-sprocket"></div><div class="cs-frames" id="frames-p4"></div></div>
+          <div class="enlarged-wrap" id="enl-p4"><div class="enlarged-photo"><img id="enli-p4" src="img/r04_rocas.jpg" alt=""><div class="enlarged-placeholder" id="enlph-p4">selecciona un fotograma</div></div><div class="enlarged-meta"><span id="enl-id-p4">— frame —</span><span id="enl-cap-p4"></span></div></div>
+        </div>
+        <div class="film-edge"></div>
+        <button class="toggle-btn" id="toggle-p4" onclick="toggleCS('p4')" style="border-color:#d4b870;color:#8B5E1A;">ver fotogramas →</button>
+      </div>
+    </div>
+    <div class="m-bot" style="border-top:1px solid #d4b87033;"><span style="color:#8B5E1Aaa;">archivo fotográfico · luisa duggan</span><span style="color:#8B5E1Aaa;">— 05</span></div>
+    <div class="m-right" style="border-left:1px solid #d4b87033;color:#8B5E1A44;">004</div>
+  </div>
+
+  <!-- SPREAD 5 — barcelona situaciones -->
+  <div class="spread" id="p5" data-tipo="calle retrato" data-year="2024" data-exp="false" style="background:#fff;">
+    <div class="m-top" style="border-bottom:1px solid #e8e8e8;"><span style="color:#aaa;">barcelona, situaciones</span><span style="color:#aaa;">— 06</span></div>
+    <div class="m-left" style="border-right:1px solid #e8e8e8;color:#ddd;">luisa duggan</div>
+    <div class="spread-body">
+      <div class="text-col" style="border-right:1px solid #e8e8e8;">
+        <div>
+          <span class="proj-num" style="color:#aaa;">005 / 008</span>
+          <h2 class="proj-title" style="color:#1233c8;">barcelona,<br>situaciones</h2>
+          <p class="proj-body" style="color:#555;">barcelona, 2024. patinadores, mercado, calle. el zoom como distancia necesaria. situaciones que no se repiten.</p>
+        </div>
+        <div>
+          <div class="facts" style="border-top:1px solid #e8e8e8;">
+            <div class="fact"><span class="fk" style="color:#aaa;">tipo</span><span class="fv">calle · retrato</span></div>
+            <div class="fact"><span class="fk" style="color:#aaa;">lugar</span><span class="fv">barcelona</span></div>
+            <div class="fact"><span class="fk" style="color:#aaa;">año</span><span class="fv">2024</span></div>
+            <div class="fact"><span class="fk" style="color:#aaa;">rollo</span><span class="fv">r·06 — ultramax 400</span></div>
+            <div class="fact"><span class="fk" style="color:#aaa;">fotog.</span><span class="fv">34</span></div>
+          </div>
+          <div class="sp-wrap" style="border-top-color:#e8e8e8;">
+            <p class="sp-lbl">soundtrack</p>
+            <p class="sp-track">Kelman Duran — 13th Month</p>
+            <iframe style="border-radius:0;" src="https://open.spotify.com/embed/track/1NLOiiwxMFBqJEAFqGAQmP?utm_source=generator&theme=0" width="100%" height="80" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+          </div>
+        </div>
+      </div>
+      <div class="sheet-col">
+        <p class="sheet-lbl" style="color:#bbb;">plancha de contacto · r·06 · 34 fotogramas</p>
+        <div class="film-edge"></div>
+        <div class="full-sheet" onclick="openLb('img/r06_barcelona.jpg','barcelona, situaciones · r·06')">
+          <img src="img/r06_barcelona.jpg" alt="barcelona situaciones">
+          <div class="sheet-overlay"><span>ampliar plancha ↗</span></div>
+        </div>
+        <div class="cs-container" id="cs-p5">
+          <div class="cs-grid"><div class="cs-sprocket"></div><div class="cs-frames" id="frames-p5"></div></div>
+          <div class="enlarged-wrap" id="enl-p5"><div class="enlarged-photo"><img id="enli-p5" src="img/r06_barcelona.jpg" alt=""><div class="enlarged-placeholder" id="enlph-p5">selecciona un fotograma</div></div><div class="enlarged-meta"><span id="enl-id-p5">— frame —</span><span id="enl-cap-p5"></span></div></div>
+        </div>
+        <div class="film-edge"></div>
+        <button class="toggle-btn" id="toggle-p5" onclick="toggleCS('p5')">ver fotogramas →</button>
+      </div>
+    </div>
+    <div class="m-bot" style="border-top:1px solid #e8e8e8;"><span style="color:#aaa;">archivo fotográfico · luisa duggan</span><span style="color:#aaa;">— 06</span></div>
+    <div class="m-right" style="border-left:1px solid #e8e8e8;color:#ddd;">005</div>
+  </div>
+
+  <!-- SPREAD 6 — música interiores EXPERIMENTAL verde -->
+  <div class="spread" id="p6" data-tipo="interior retrato experimental" data-year="2023" data-exp="true" style="background:#d4e8d4;">
+    <div class="m-top" style="border-bottom:1px solid #1a4a1a22;"><span style="color:#1a4a1aaa;">música · interiores</span><span style="color:#1a4a1aaa;">— 07</span></div>
+    <div class="m-left" style="border-right:1px solid #1a4a1a22;color:#1a4a1a44;">luisa duggan</div>
+    <div class="spread-body">
+      <div class="text-col" style="border-right:1px solid #1a4a1a22;">
+        <div>
+          <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.4rem;">
+            <span class="proj-num" style="color:#1a4a1aaa;">006 / 008</span>
+            <span class="exp-badge" style="background:#1a3a1a;color:#d4e8d4;">experimental</span>
+          </div>
+          <h2 class="proj-title" style="color:#1a3a1a;">música·<br>interiores</h2>
+          <p class="proj-body" style="color:#1a4a1acc;">músicos en casas, en bares, en estudios improvisados. la guitarra como eje. luz amarilla, paredes con memoria.</p>
+        </div>
+        <div>
+          <div class="facts" style="border-top:1px solid #1a4a1a22;">
+            <div class="fact"><span class="fk" style="color:#1a4a1aaa;">tipo</span><span class="fv" style="color:#1a3a1a;">interior · retrato</span></div>
+            <div class="fact"><span class="fk" style="color:#1a4a1aaa;">lugar</span><span class="fv" style="color:#1a3a1a;">barcelona · calella</span></div>
+            <div class="fact"><span class="fk" style="color:#1a4a1aaa;">año</span><span class="fv" style="color:#1a3a1a;">2023</span></div>
+            <div class="fact"><span class="fk" style="color:#1a4a1aaa;">rollo</span><span class="fv" style="color:#1a3a1a;">r·05 — hp5</span></div>
+            <div class="fact"><span class="fk" style="color:#1a4a1aaa;">fotog.</span><span class="fv" style="color:#1a3a1a;">32</span></div>
+          </div>
+          <div class="sp-wrap" style="border-top-color:#1a4a1a22;">
+            <p class="sp-lbl" style="color:#1a4a1a;">soundtrack</p>
+            <p class="sp-track" style="color:#1a3a1a;">Nick Drake — Place To Be</p>
+            <iframe style="border-radius:0;" src="https://open.spotify.com/embed/track/3HfB5hBU9YDG3oZcCRzBMx?utm_source=generator&theme=0" width="100%" height="80" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+          </div>
+        </div>
+      </div>
+      <div class="sheet-col">
+        <p class="sheet-lbl" style="color:#1a4a1a88;">plancha de contacto · r·05 · 32 fotogramas</p>
+        <div class="film-edge"></div>
+        <div class="full-sheet" onclick="openLb('img/r05_musica.jpg','música · interiores · r·05')">
+          <img src="img/r05_musica.jpg" alt="música interiores">
+          <div class="sheet-overlay"><span>ampliar plancha ↗</span></div>
+        </div>
+        <div class="cs-container" id="cs-p6">
+          <div class="cs-grid"><div class="cs-sprocket"></div><div class="cs-frames" id="frames-p6"></div></div>
+          <div class="enlarged-wrap" id="enl-p6"><div class="enlarged-photo"><img id="enli-p6" src="img/r05_musica.jpg" alt=""><div class="enlarged-placeholder" id="enlph-p6">selecciona un fotograma</div></div><div class="enlarged-meta"><span id="enl-id-p6">— frame —</span><span id="enl-cap-p6"></span></div></div>
+        </div>
+        <div class="film-edge"></div>
+        <button class="toggle-btn" id="toggle-p6" onclick="toggleCS('p6')" style="border-color:#4a8a4a;color:#1a4a1a;">ver fotogramas →</button>
+      </div>
+    </div>
+    <div class="m-bot" style="border-top:1px solid #1a4a1a22;"><span style="color:#1a4a1aaa;">archivo fotográfico · luisa duggan</span><span style="color:#1a4a1aaa;">— 07</span></div>
+    <div class="m-right" style="border-left:1px solid #1a4a1a22;color:#1a4a1a44;">006</div>
+  </div>
+
+  <!-- SPREAD 7 — gente movimiento -->
+  <div class="spread" id="p7" data-tipo="calle accion" data-year="2024" data-exp="false" style="background:#fff;">
+    <div class="m-top" style="border-bottom:1px solid #e8e8e8;"><span style="color:#aaa;">gente · movimiento</span><span style="color:#aaa;">— 08</span></div>
+    <div class="m-left" style="border-right:1px solid #e8e8e8;color:#ddd;">luisa duggan</div>
+    <div class="spread-body">
+      <div class="text-col" style="border-right:1px solid #e8e8e8;">
+        <div>
+          <span class="proj-num" style="color:#aaa;">007 / 008</span>
+          <h2 class="proj-title" style="color:#111;">gente·<br>movimiento</h2>
+          <p class="proj-body" style="color:#555;">personas en movimiento. sombras largas, luz cenital. el zoom comprime el espacio, acerca lo que estaba lejos.</p>
+        </div>
+        <div>
+          <div class="facts" style="border-top:1px solid #e8e8e8;">
+            <div class="fact"><span class="fk" style="color:#aaa;">tipo</span><span class="fv">calle · acción</span></div>
+            <div class="fact"><span class="fk" style="color:#aaa;">lugar</span><span class="fv">barcelona</span></div>
+            <div class="fact"><span class="fk" style="color:#aaa;">año</span><span class="fv">2024</span></div>
+            <div class="fact"><span class="fk" style="color:#aaa;">rollo</span><span class="fv">r·07 — gold 200</span></div>
+            <div class="fact"><span class="fk" style="color:#aaa;">fotog.</span><span class="fv">54</span></div>
+          </div>
+          <div class="sp-wrap" style="border-top-color:#e8e8e8;">
+            <p class="sp-lbl">soundtrack</p>
+            <p class="sp-track">Steve Reich — Music for 18 Musicians</p>
+            <iframe style="border-radius:0;" src="https://open.spotify.com/embed/track/1NLOiiwxMFBqJEAFqGAQmP?utm_source=generator&theme=0" width="100%" height="80" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+          </div>
+        </div>
+      </div>
+      <div class="sheet-col">
+        <p class="sheet-lbl" style="color:#bbb;">plancha de contacto · r·07 · 54 fotogramas</p>
+        <div class="film-edge"></div>
+        <div class="full-sheet" onclick="openLb('img/r07_movimiento.jpg','gente · movimiento · r·07')">
+          <img src="img/r07_movimiento.jpg" alt="gente movimiento">
+          <div class="sheet-overlay"><span>ampliar plancha ↗</span></div>
+        </div>
+        <div class="cs-container" id="cs-p7">
+          <div class="cs-grid"><div class="cs-sprocket"></div><div class="cs-frames" id="frames-p7"></div></div>
+          <div class="enlarged-wrap" id="enl-p7"><div class="enlarged-photo"><img id="enli-p7" src="img/r07_movimiento.jpg" alt=""><div class="enlarged-placeholder" id="enlph-p7">selecciona un fotograma</div></div><div class="enlarged-meta"><span id="enl-id-p7">— frame —</span><span id="enl-cap-p7"></span></div></div>
+        </div>
+        <div class="film-edge"></div>
+        <button class="toggle-btn" id="toggle-p7" onclick="toggleCS('p7')">ver fotogramas →</button>
+      </div>
+    </div>
+    <div class="m-bot" style="border-top:1px solid #e8e8e8;"><span style="color:#aaa;">archivo fotográfico · luisa duggan</span><span style="color:#aaa;">— 08</span></div>
+    <div class="m-right" style="border-left:1px solid #e8e8e8;color:#ddd;">007</div>
+  </div>
+
+  <!-- SPREAD 8 — luz interior EXPERIMENTAL violeta -->
+  <div class="spread" id="p8" data-tipo="interior retrato experimental" data-year="2022" data-exp="true" style="background:#e8d4f0;">
+    <div class="m-top" style="border-bottom:1px solid #3a1a5a22;"><span style="color:#3a1a5aaa;">luz interior</span><span style="color:#3a1a5aaa;">— 09</span></div>
+    <div class="m-left" style="border-right:1px solid #3a1a5a22;color:#3a1a5a44;">luisa duggan</div>
+    <div class="spread-body">
+      <div class="text-col" style="border-right:1px solid #3a1a5a22;">
+        <div>
+          <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.4rem;">
+            <span class="proj-num" style="color:#3a1a5aaa;">008 / 008</span>
+            <span class="exp-badge" style="background:#3a1a5a;color:#e8d4f0;">experimental</span>
+          </div>
+          <h2 class="proj-title" style="color:#3a1a5a;">luz<br>interior</h2>
+          <p class="proj-body" style="color:#3a1a5acc;">interiores de verano. cocinas, salones, terrazas. la luz que entra por las persianas a las cuatro de la tarde.</p>
+        </div>
+        <div>
+          <div class="facts" style="border-top:1px solid #3a1a5a22;">
+            <div class="fact"><span class="fk" style="color:#3a1a5aaa;">tipo</span><span class="fv" style="color:#3a1a5a;">interior · retrato</span></div>
+            <div class="fact"><span class="fk" style="color:#3a1a5aaa;">lugar</span><span class="fv" style="color:#3a1a5a;">barcelona · calella</span></div>
+            <div class="fact"><span class="fk" style="color:#3a1a5aaa;">año</span><span class="fv" style="color:#3a1a5a;">2022</span></div>
+            <div class="fact"><span class="fk" style="color:#3a1a5aaa;">rollo</span><span class="fv" style="color:#3a1a5a;">r·02 — ultramax 400</span></div>
+            <div class="fact"><span class="fk" style="color:#3a1a5aaa;">fotog.</span><span class="fv" style="color:#3a1a5a;">28</span></div>
+          </div>
+          <div class="sp-wrap" style="border-top-color:#3a1a5a22;">
+            <p class="sp-lbl" style="color:#3a1a5a;">soundtrack</p>
+            <p class="sp-track" style="color:#3a1a5a;">Broadcast — Come On Let's Go</p>
+            <iframe style="border-radius:0;" src="https://open.spotify.com/embed/track/6uelXRyv8JW0vfuDwMnGBW?utm_source=generator&theme=0" width="100%" height="80" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+          </div>
+        </div>
+      </div>
+      <div class="sheet-col">
+        <p class="sheet-lbl" style="color:#3a1a5a88;">plancha de contacto · r·02 · 28 fotogramas</p>
+        <div class="film-edge"></div>
+        <div class="full-sheet" onclick="openLb('img/r02_luz_interior.jpg','luz interior · r·02')">
+          <img src="img/r02_luz_interior.jpg" alt="luz interior">
+          <div class="sheet-overlay"><span>ampliar plancha ↗</span></div>
+        </div>
+        <div class="cs-container" id="cs-p8">
+          <div class="cs-grid"><div class="cs-sprocket"></div><div class="cs-frames" id="frames-p8"></div></div>
+          <div class="enlarged-wrap" id="enl-p8"><div class="enlarged-photo"><img id="enli-p8" src="img/r02_luz_interior.jpg" alt=""><div class="enlarged-placeholder" id="enlph-p8">selecciona un fotograma</div></div><div class="enlarged-meta"><span id="enl-id-p8">— frame —</span><span id="enl-cap-p8"></span></div></div>
+        </div>
+        <div class="film-edge"></div>
+        <button class="toggle-btn" id="toggle-p8" onclick="toggleCS('p8')" style="border-color:#7a4a9a;color:#3a1a5a;">ver fotogramas →</button>
+      </div>
+    </div>
+    <div class="m-bot" style="border-top:1px solid #3a1a5a22;"><span style="color:#3a1a5aaa;">archivo fotográfico · luisa duggan</span><span style="color:#3a1a5aaa;">— 09</span></div>
+    <div class="m-right" style="border-left:1px solid #3a1a5a22;color:#3a1a5a44;">008</div>
+  </div>
+
+</div><!-- /sec-work -->
+
+<!-- ============================================================ ABOUT -->
+<div id="sec-about" class="sec">
+  <div class="about-hero">
+    <div class="about-ghost">foto</div>
+    <!-- ✏️ EDITAR: texto principal sobre ti -->
+    <div class="about-hl">fotografía<br>de <em>situaciones</em></div>
+  </div>
+  <div class="about-cols">
+    <div class="about-col">
+      <p class="acol-lbl">sobre el trabajo</p>
+      <!-- ✏️ EDITAR: bio -->
+      <p>trabajo con analógico, casi siempre 35mm y objetivos zoom. me interesa el momento en que algo ordinario se convierte en otra cosa: una mirada, un encuadre, una fracción de segundo que no tenía por qué ser nada.</p>
+      <p style="color:#aaa;">con base en barcelona desde 2015. proyectos documentales y experimentales en españa y portugal.</p>
+    </div>
+    <div class="about-col">
+      <p class="acol-lbl">datos del archivo</p>
+      <!-- ✏️ EDITAR: estadísticas -->
+      <div class="stat"><span class="sk">base</span><span class="sv">barcelona</span></div>
+      <div class="stat"><span class="sk">activo desde</span><span class="sv">2015</span></div>
+      <div class="stat"><span class="sk">formato</span><span class="sv">35mm analógico</span></div>
+      <div class="stat"><span class="sk">rollos</span><span class="sv">19 archivados</span></div>
+      <div class="stat"><span class="sk">proyectos</span><span class="sv">8 activos</span></div>
+      <div class="stat"><span class="sk">archivo nº</span><span class="sv" style="color:#d4200c;">04</span></div>
+    </div>
+    <div class="about-col">
+      <p class="acol-lbl">fragmento de archivo</p>
+      <img src="img/r03_vias_playa.jpg" style="width:100%;margin-bottom:6px;" alt="archivo">
+      <p style="font-family:var(--mono);font-size:7px;color:#ccc;letter-spacing:1px;text-transform:lowercase;">r·03 · fragmento · 2022</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ CONTACT -->
+<div id="sec-contact" class="sec">
+  <div class="contact-l">
+    <div class="contact-big">si tienes<br>algo en<br><em>mente.</em></div>
+    <div>
+      <!-- ✏️ EDITAR: tus datos de contacto -->
+      <div class="cline"><span class="ck">email</span><span class="cv">hola@luisaduggan.com</span></div>
+      <div class="cline"><span class="ck">instagram</span><span class="cv">@luisaduggan</span></div>
+      <div class="cline"><span class="ck">ciudad</span><span class="cv">barcelona</span></div>
+      <div class="cline"><span class="ck">disponible</span><span class="cv">encargos · exposiciones</span></div>
+    </div>
+  </div>
+  <div class="contact-r">
+    <p class="clbl">escribir un mensaje</p>
+    <div class="cfield"><label>nombre</label><input type="text" placeholder="tu nombre"></div>
+    <div class="cfield"><label>email</label><input type="email" placeholder="tu@email.com"></div>
+    <div class="cfield"><label>mensaje</label><textarea placeholder="cuéntame en qué estás pensando"></textarea></div>
+    <button class="csend">enviar →</button>
+  </div>
+</div>
+
+<script>
+// ── nav ──────────────────────────────────────────────────────────────────────
+function showSec(s) {
+  document.querySelectorAll('.sec').forEach(el => el.classList.remove('visible'));
+  document.getElementById('sec-'+s).classList.add('visible');
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.toggle('active', a.dataset.s===s));
+}
+document.querySelector('.nav-links').addEventListener('click', e => {
+  const a = e.target.closest('a');
+  if (!a) return;
+  e.preventDefault();
+  showSec(a.dataset.s);
+});
+
+// ── filters ──────────────────────────────────────────────────────────────────
+document.querySelector('.fbar').addEventListener('click', e => {
+  const btn = e.target.closest('.ftag');
+  if (!btn) return;
+  const g = btn.dataset.g;
+  document.querySelectorAll(`.ftag[data-g="${g}"]`).forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  filterSpreads();
+});
+function filterSpreads() {
+  const active = {};
+  document.querySelectorAll('.ftag.on').forEach(b => { active[b.dataset.g] = b.dataset.v; });
+  document.querySelectorAll('.spread').forEach(pg => {
+    const tipo  = pg.dataset.tipo  || '';
+    const year  = pg.dataset.year  || '';
+    const isExp = pg.dataset.exp   === 'true';
+    let show = true;
+    if (active.tipo && active.tipo !== 'todo') {
+      show = active.tipo === 'experimental' ? isExp : tipo.includes(active.tipo);
+    }
+    if (active.year && active.year !== 'todo') show = show && year === active.year;
+    pg.style.display = show ? '' : 'none';
+  });
+}
+
+// ── index scroll ─────────────────────────────────────────────────────────────
+function scrollTo(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+// ── contact sheet frames ─────────────────────────────────────────────────────
+const SPREAD_FRAMES = {
+  'p1':41,'p2':38,'p3':35,'p4':37,'p5':34,'p6':32,'p7':36,'p8':28
+};
+
+function buildFrames(pid) {
+  const container = document.getElementById('frames-'+pid);
+  if (container.children.length > 0) return; // already built
+  const total = Math.min(SPREAD_FRAMES[pid] || 36, 36);
+  for (let i = 0; i < total; i++) {
+    const t = 14 + (i * 9 % 20);
+    const fr = document.createElement('div');
+    fr.className = 'cs-frame';
+    fr.dataset.idx = i;
+    fr.style.background = `rgb(${t},${t+2},${t})`;
+    fr.innerHTML = `<span class="fr-num">${String(i+1).padStart(2,'0')}</span>`;
+    fr.addEventListener('click', () => selectFrame(fr, pid, i));
+    container.appendChild(fr);
+  }
+}
+
+function selectFrame(el, pid, idx) {
+  document.querySelectorAll(`#frames-${pid} .cs-frame`).forEach(f => f.classList.remove('active'));
+  el.classList.add('active');
+
+  const enl  = document.getElementById('enl-'+pid);
+  const img  = document.getElementById('enli-'+pid);
+  const ph   = document.getElementById('enlph-'+pid);
+  const idEl = document.getElementById('enl-id-'+pid);
+
+  enl.style.display = 'block';
+  img.style.display = 'block';
+  ph.style.display  = 'none';
+
+  const cols = 6;
+  const rows = Math.ceil((SPREAD_FRAMES[pid]||36) / cols);
+  const col  = idx % cols;
+  const row  = Math.floor(idx / cols);
+  const px   = cols > 1 ? (col / (cols-1) * 100).toFixed(1) : 50;
+  const py   = rows > 1 ? (row / (rows-1) * 100).toFixed(1) : 50;
+  img.style.objectPosition = `${px}% ${py}%`;
+  img.style.transform      = 'scale(2)';
+  img.style.transformOrigin = `${px}% ${py}%`;
+
+  const total = document.querySelectorAll(`#frames-${pid} .cs-frame`).length;
+  idEl.textContent = `— frame ${String(idx+1).padStart(2,'0')} / ${String(total).padStart(2,'0')}`;
+}
+
+function toggleCS(pid) {
+  const full   = document.querySelector(`#${pid} .full-sheet`);
+  const cs     = document.getElementById('cs-'+pid);
+  const btn    = document.getElementById('toggle-'+pid);
+  const isGrid = cs.style.display === 'flex';
+  if (isGrid) {
+    cs.style.display   = 'none';
+    full.style.display = '';
+    btn.textContent    = 'ver fotogramas →';
+  } else {
+    buildFrames(pid);
+    cs.style.display   = 'flex';
+    full.style.display = 'none';
+    btn.textContent    = 'ver plancha completa →';
+  }
+}
+
+// ── lightbox ─────────────────────────────────────────────────────────────────
+function openLb(src, cap) {
+  document.getElementById('lb-img').src = src;
+  document.getElementById('lb-cap').textContent = cap;
+  document.getElementById('lb').classList.add('open');
+}
+function closeLb() { document.getElementById('lb').classList.remove('open'); }
+document.getElementById('lb').addEventListener('click', e => {
+  if (e.target === document.getElementById('lb')) closeLb();
+});
+</script>
+</body>
+</html>
